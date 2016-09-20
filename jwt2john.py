@@ -2,10 +2,24 @@ import sys
 from jwt.utils import base64url_decode
 from binascii import hexlify
 
-enc_jwt = sys.argv[1].encode('utf-8')
-parts = enc_jwt.split(b'.')
-decoded_parts = [base64url_decode(p) for p in parts]
-decoded_parts[2] = hexlify(decoded_parts[2])
-data = parts[0] + b'.' + parts[1]
-with open('jwt.john', 'wb') as fp:
-    fp.write(data + b'#' + decoded_parts[2] + b"\n")
+
+def jwt2john(jwt):
+    """
+    Convert signature from base64 to hex, and separate it from the data by a #
+    so that John can parse it.
+    """
+    jwt_bytes = jwt.encode('ascii')
+    parts = jwt_bytes.split(b'.')
+
+    data = parts[0] + b'.' + parts[1]
+    signature = hexlify(base64url_decode(parts[2]))
+
+    return (data + b'#' + signature).decode('ascii')
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: %s JWT" % sys.argv[0])
+    else:
+        john = jwt2john(sys.argv[1])
+        print(john)
