@@ -39,14 +39,18 @@ def crack_jwt(jwt, dictionary):
                 return secret
 
 
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: %s [JWT or JWT filename] [dictionary filename] " % sys.argv[0])
+def main(argv):
+    if len(argv) != 3:
+        print("Usage: %s [JWT or JWT filename] [dictionary filename] " % argv[0])
     else:
-        jwt = read_jwt(sys.argv[1])
+        jwt = read_jwt(argv[1])
         print("Cracking JWT %s" % jwt)
-        result = crack_jwt(jwt, sys.argv[2])
+        result = crack_jwt(jwt, argv[2])
         if result:
             print("Found secret key:", result)
         else:
             print("Key not found")
+
+
+if __name__ == "__main__":
+    main(sys.argv)
