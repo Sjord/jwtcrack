@@ -5,7 +5,7 @@ import sys
 
 
 def is_jwt(jwt):
-    parts = jwt.split('.')
+    parts = jwt.split(".")
     if len(parts) != 3:
         return False
 
@@ -29,7 +29,7 @@ def crack_jwt(jwt, dictionary):
             secret = secret.rstrip()
 
             try:
-                decode(jwt, secret, algorithms=['HS256'])
+                decode(jwt, secret, algorithms=["HS256"])
                 return secret
             except DecodeError:
                 # Signature verification failed
@@ -50,5 +50,3 @@ if __name__ == "__main__":
             print("Found secret key:", result)
         else:
             print("Key not found")
-
-
