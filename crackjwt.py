@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from jwt import decode, InvalidTokenError, DecodeError
+from jwt import decode, InvalidTokenError, DecodeError, get_unverified_header
 import sys
 
 
@@ -39,17 +39,27 @@ def crack_jwt(jwt, dictionary):
                 return secret
 
 
+def is_hs256(jwt):
+    header = get_unverified_header(jwt)
+    return header["alg"] == "HS256"
+
+
 def main(argv):
     if len(argv) != 3:
         print("Usage: %s [JWT or JWT filename] [dictionary filename] " % argv[0])
+        return
+
+    jwt = read_jwt(argv[1])
+    if not is_hs256(jwt):
+        print("Error: This JWT does not use the HS256 signing algorithm")
+        return
+
+    print("Cracking JWT %s" % jwt)
+    result = crack_jwt(jwt, argv[2])
+    if result:
+        print("Found secret key:", result)
     else:
-        jwt = read_jwt(argv[1])
-        print("Cracking JWT %s" % jwt)
-        result = crack_jwt(jwt, argv[2])
-        if result:
-            print("Found secret key:", result)
-        else:
-            print("Key not found")
+        print("Key not found")
 
 
 if __name__ == "__main__":
