@@ -6,7 +6,7 @@ Crack a HS256, HS384 or HS512-signed JWT. You need `PyJWT` for these scripts:
 
     crackjwt.py JWT dictionary.txt
 
-Try to verify the HS256 hash on the JWT using all words in `dictionary.txt` (one per line).
+Try to verify the signature on the JWT using all words in `dictionary.txt` (one per line).
 
 ## jwt2john
 
