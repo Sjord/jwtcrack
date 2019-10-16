@@ -24,12 +24,13 @@ def read_jwt(jwt):
 
 
 def crack_jwt(jwt, dictionary):
+    header = get_unverified_header(jwt)
     with open(dictionary) as fp:
         for secret in fp:
             secret = secret.rstrip()
 
             try:
-                decode(jwt, secret, algorithms=["HS256"])
+                decode(jwt, secret, algorithms=[header["alg"]])
                 return secret
             except DecodeError:
                 # Signature verification failed
@@ -39,9 +40,9 @@ def crack_jwt(jwt, dictionary):
                 return secret
 
 
-def is_hs256(jwt):
+def signature_is_supported(jwt):
     header = get_unverified_header(jwt)
-    return header["alg"] == "HS256"
+    return header["alg"] in ["HS256", "HS384", "HS512"]
 
 
 def main(argv):
@@ -50,8 +51,8 @@ def main(argv):
         return
 
     jwt = read_jwt(argv[1])
-    if not is_hs256(jwt):
-        print("Error: This JWT does not use the HS256 signing algorithm")
+    if not signature_is_supported(jwt):
+        print("Error: This JWT does not use a supported signing algorithm")
         return
 
     print("Cracking JWT %s" % jwt)
