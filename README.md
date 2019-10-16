@@ -1,4 +1,4 @@
-Crack a HS256-signed JWT. You need `PyJWT` for these scripts:
+Crack a HS256, HS384 or HS512-signed JWT. You need `PyJWT` for these scripts:
 
     pip install PyJWT
 
