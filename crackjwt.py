@@ -2,7 +2,7 @@
 
 from jwt import decode, InvalidTokenError, DecodeError, get_unverified_header
 import sys
-
+from tqdm import tqdm
 
 def is_jwt(jwt):
     parts = jwt.split(".")
@@ -26,7 +26,7 @@ def read_jwt(jwt):
 def crack_jwt(jwt, dictionary):
     header = get_unverified_header(jwt)
     with open(dictionary) as fp:
-        for secret in fp:
+        for secret in tqdm(fp):
             secret = secret.rstrip()
 
             try:
