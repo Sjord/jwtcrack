@@ -2,6 +2,8 @@
 
 from jwt import decode, InvalidTokenError, DecodeError, get_unverified_header
 import sys
+from tqdm import tqdm
+import os
 
 
 def is_jwt(jwt):
@@ -25,8 +27,18 @@ def read_jwt(jwt):
 
 def crack_jwt(jwt, dictionary):
     header = get_unverified_header(jwt)
-    with open(dictionary) as fp:
+    wordcount = 0
+
+    with open(dictionary) as fp, tqdm() as pbar:
+        fp.seek(0, os.SEEK_END)
+        filesize = fp.tell()
+        fp.seek(0, os.SEEK_SET)
+
         for secret in fp:
+            pbar.update(1)
+            wordcount += 1
+            pbar.total = wordcount * filesize / fp.tell()
+
             secret = secret.rstrip()
 
             try:
