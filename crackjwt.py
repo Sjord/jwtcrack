@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 from jwt import decode, InvalidTokenError, DecodeError, get_unverified_header
 import sys

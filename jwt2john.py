@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 from jwt.utils import base64url_decode
 from binascii import hexlify
