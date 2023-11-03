@@ -1,2 +1,4 @@
-PyJWT==1.4.2
+PyJWT==2.8.0
 tqdm
+jwt
+decode
