@@ -25,7 +25,7 @@ def read_jwt(jwt):
 
 def crack_jwt(jwt, dictionary):
     header = get_unverified_header(jwt)
-    with open(dictionary) as fp:
+    with open(dictionary,'r',encoding='latin-1') as fp:
         for secret in tqdm(fp):
             secret = secret.rstrip()
 
