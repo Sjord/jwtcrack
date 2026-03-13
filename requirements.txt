@@ -1,2 +1,2 @@
-PyJWT==1.4.2
+PyJWT==2.12.0
 tqdm
